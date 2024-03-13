@@ -1,5 +1,4 @@
 from dotenv import load_dotenv
-from sys import argv
 from src.infra.database.repositories import instantiate_pdf_vector_repository, instantiate_user_repository, instantiate_chat_repository
 
 from src.interfaces.http.server import start_server 
@@ -9,18 +8,21 @@ from src.infra.clients import instantiate_gcp_storage_client, instantiate_ai_cli
 
 import asyncio
 import sys
+from os import environ
 from paths import PROJECT_ROOT 
 
 
+def create_gcp_keys():
+    gcp_json_plain = environ.get('GCP_KEYS_JSON')
+    with open('gcp-keys.json', 'w', encoding='utf-8') as f:
+        if gcp_json_plain is None:
+            print('GCP_KEYS_JSON is not set')
+            return
+        f.write(gcp_json_plain)
 
 def main():
     sys.path.insert(1, PROJECT_ROOT)
-
-    is_dev = False
-
-    for arg in argv:
-        if arg == '--dev-mode':
-            is_dev = True
+    create_gcp_keys()
 
     load_dotenv()
     instantiate_database_engine()
