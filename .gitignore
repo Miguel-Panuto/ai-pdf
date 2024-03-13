@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+*.rsa
+*.rsa.pub
+*.env
+
+gcp-keys.json
+
+.DS_Store

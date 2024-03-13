@@ -1,0 +1,15 @@
+faiss-cpu==1.8.0
+fastapi==0.99.1
+google-cloud-storage==2.14.0
+langchain==0.1.11
+langchain_community==0.0.27
+langchain_mongodb==0.1.1
+langchain_openai==0.0.8
+protobuf==4.25.3
+psycopg2_binary==2.9.9
+pydantic==1.10.13
+PyPDF2==3.0.1
+python-dotenv==1.0.0
+python-multipart==0.0.9
+uuid==1.30
+uvicorn==0.23.2
