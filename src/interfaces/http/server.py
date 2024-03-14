@@ -3,13 +3,23 @@ from fastapi.responses import JSONResponse
 
 import uvicorn
 
+from src.container import Container
 from src.interfaces.http.pdf_router import router as pdf_router
 from src.interfaces.http.chat_router import router as chat_router
 from src.auth import find_user_by_token 
 
 from os import environ
 
-app = FastAPI()
+def create_app() -> FastAPI:
+    container = Container()
+
+    app = FastAPI()
+    app.container = container
+    app.include_router(pdf_router)
+    app.include_router(chat_router)
+    return app
+
+app = create_app()
 
 @app.middleware("http")
 async def validate(request, call_next):
@@ -29,8 +39,6 @@ async def validate(request, call_next):
 async def root():
     return {"message": "Hello World"}
 
-app.include_router(pdf_router)
-app.include_router(chat_router)
 
 def start_server():
     port = environ.get('PORT', '3000')

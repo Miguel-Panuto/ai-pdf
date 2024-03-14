@@ -1,16 +1,14 @@
 from dotenv import load_dotenv
-from src.infra.database.repositories import instantiate_pdf_vector_repository, instantiate_user_repository, instantiate_chat_repository
 
-from src.interfaces.http.server import start_server 
+from src.container import Container
 
-from src.infra.database import instantiate_database_engine
-from src.infra.clients import instantiate_gcp_storage_client, instantiate_ai_client
+from src.interfaces.http.server import start_server
+
 
 import asyncio
 import sys
 from os import environ
 from paths import PROJECT_ROOT 
-
 
 def create_gcp_keys():
     gcp_json_plain = environ.get('GCP_KEYS_JSON')
@@ -25,12 +23,6 @@ def main():
     load_dotenv()
     create_gcp_keys()
 
-    instantiate_database_engine()
-    instantiate_gcp_storage_client()
-    instantiate_ai_client()
-    instantiate_pdf_vector_repository()
-    instantiate_user_repository()
-    instantiate_chat_repository()
 
     asyncio.run(start_server()) # type: ignore
 

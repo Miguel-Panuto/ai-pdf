@@ -14,7 +14,8 @@ class GetChatUsecase:
         if type(chat.chat_id) is not int:
             raise ValueError("Chat not found")
         print(f"{call_name} - Chat found: {chat.chat_id}")
-        chat_messages = self.ai_client.get_chat_messages(chat.chat_id) # type: ignore
+        chat_messages = self.ai_client.get_chat_messages(chat.chat_id)
+
         return {
             'chat': {
                 'name': chat.name,

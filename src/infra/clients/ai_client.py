@@ -19,11 +19,11 @@ class AIClient:
         embedder = OpenAIEmbeddings()
         return FAISS.load_local(vectorstore_path, embedder, allow_dangerous_deserialization=True)
 
-    def _get_history(self, chat_id: str):
+    def _get_history(self, chat_id: int):
         mongo_url = environ.get('MONGO_URL', 'mongodb://localhost:27017/')
-        return MongoDBChatMessageHistory(session_id=chat_id, connection_string=mongo_url)
+        return MongoDBChatMessageHistory(session_id=str(chat_id), connection_string=mongo_url)
 
-    def _get_memory(self, chat_id: str):
+    def _get_memory(self, chat_id: int):
         history = self._get_history(chat_id)
         return ConversationBufferMemory(chat_memory=history, return_messages=True, memory_key='chat_history')
 
@@ -39,7 +39,7 @@ class AIClient:
         print(f"{call_name} - Invoking vectorstore")
         return vectorstore.as_retriever().invoke(quote)
 
-    def get_chat_messages(self, chat_id: str):
+    def get_chat_messages(self, chat_id: int):
         call_name = "[AIClient][get_chat_messages]"
         print(f"{call_name} - Getting chat messages for chat: {chat_id}")
         chat_message_history = self._get_history(chat_id)

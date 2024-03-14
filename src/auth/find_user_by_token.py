@@ -1,7 +1,8 @@
-from src.infra.database.repositories import instantiate_user_repository, unload_repositories
+from src.infra.database.repositories.user_repository import UserRepository
+from src.infra.database import DatabaseEngine
 
 def execute(token: str) -> int:
-    from src.infra.database.repositories import user_repository
+    user_repository = UserRepository(DatabaseEngine())
     call_name = '[find_user_by_token][execute]'
     print(f'{call_name} - Finding user by token: {token}')
     user_id = user_repository.get_user_by_token(token) # type: ignore
