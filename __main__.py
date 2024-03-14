@@ -14,6 +14,7 @@ from paths import PROJECT_ROOT
 
 def create_gcp_keys():
     gcp_json_plain = environ.get('GCP_KEYS_JSON')
+    print(gcp_json_plain)
     with open('gcp-keys.json', 'w', encoding='utf-8') as f:
         if gcp_json_plain is None:
             print('GCP_KEYS_JSON is not set')
@@ -22,9 +23,9 @@ def create_gcp_keys():
 
 def main():
     sys.path.insert(1, PROJECT_ROOT)
+    load_dotenv()
     create_gcp_keys()
 
-    load_dotenv()
     instantiate_database_engine()
     instantiate_gcp_storage_client()
     instantiate_ai_client()
