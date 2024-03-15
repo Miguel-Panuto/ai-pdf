@@ -1,5 +1,5 @@
 from src.infra.database.repositories.user_repository import UserRepository
-from src.infra.database import DatabaseEngine
+from src.infra.database.database_engine import DatabaseEngine
 
 def execute(token: str) -> int:
     user_repository = UserRepository(DatabaseEngine())

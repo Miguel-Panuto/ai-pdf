@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from dependency_injector.wiring import inject
+from dependency_injector.wiring import inject, Provide
 from fastapi import APIRouter, Request, Header, Depends
 from pydantic import BaseModel
 

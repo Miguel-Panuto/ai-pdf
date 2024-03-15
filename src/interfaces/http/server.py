@@ -14,7 +14,7 @@ def create_app() -> FastAPI:
     container = Container()
 
     app = FastAPI()
-    app.container = container
+    app.container = container # type: ignore
     app.include_router(pdf_router)
     app.include_router(chat_router)
     return app
