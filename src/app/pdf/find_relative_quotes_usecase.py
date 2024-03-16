@@ -38,7 +38,7 @@ class FindRelativeQuotesUsecase:
             content = content.replace('-\n', '').replace('\n', ' ').replace('\r', ' ').replace('\t', ' ').replace('  ', ' ')
             content = re.sub(r'\. (?=[A-Z])', '. ', content)
             quotes_return.append({
-                'quote': content,
+                'quote_relative': content,
             })
 
         return quotes_return

@@ -8,12 +8,12 @@ from src.interfaces.http.pdf_router import router as pdf_router
 from src.interfaces.http.chat_router import router as chat_router
 from src.auth import find_user_by_token 
 
-from os import environ
+from os import environ, name
 
 def create_app() -> FastAPI:
     container = Container()
 
-    app = FastAPI()
+    app = FastAPI(name='Almanaque PDF')
     app.container = container # type: ignore
     app.include_router(pdf_router)
     app.include_router(chat_router)

@@ -29,7 +29,7 @@ class Container(containers.DeclarativeContainer):
     config = providers.Configuration()
 
     # Database
-    database_engine = providers.Singleton(DatabaseEngine)
+    database_engine = providers.Factory(DatabaseEngine)
 
     # Repositories
     pdf_vector_repository = providers.Factory(PdfVectorRepository, database_engine=database_engine)
