@@ -6,3 +6,8 @@ services:
     name: api
     ports:
       - "8888:8888"
+  postgres:
+    image: postgres
+    restart: allways
+    enviroment:
+      POSTGRES_PASSWORD: 123333

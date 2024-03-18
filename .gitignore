@@ -9,3 +9,5 @@ __pycache__/
 gcp-keys.json
 
 .DS_Store
+
+.venv
