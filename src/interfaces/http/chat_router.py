@@ -57,7 +57,7 @@ async def update_chat(
     res = update_chat_usecase.execute(user_id, chat_id, body.name, body.pdf_id)
     return res
 
-@router.get('/{chat_id}')
+@router.get('/{chat_id}', response_model=ChatResponsePdfMessage)
 @inject
 async def get_chat(
         request: Request, 

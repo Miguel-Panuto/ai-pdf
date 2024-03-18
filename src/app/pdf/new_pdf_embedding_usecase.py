@@ -3,6 +3,7 @@ from os import path, remove
 
 from PyPDF2 import PdfReader
 from uuid import uuid4 as v4
+from fastapi import UploadFile
 from langchain.text_splitter import CharacterTextSplitter
 
 from src.infra.database.repositories.pdf_vector_repository import PdfVectorRepository
@@ -42,13 +43,18 @@ class NewPdfEmbeddingUsecase:
             remove(f"{path_saved}.zip")
 
     @cleanup_tmp_files
-    def execute(self, pdf: bytes, user_id: int, label: str | None, tags: str | None):
+    def execute(self, pdf: UploadFile, user_id: int, label: str | None):
         call_name = '[new_pdf_embedding_usecase][execute]'
-        pdf_stream = BytesIO(pdf)
+        pdf_bytes = pdf.file.read()
+        pdf_stream = BytesIO(pdf_bytes)
         pdf_reader = PdfReader(pdf_stream)
         chunks = self._text_to_chunks(self._pages_to_text(pdf_reader))
 
         print(f'{call_name} just created the chunks')
+        if not label:
+            label = pdf.filename.split(".")[0] # type: ignore
+        if len(label) > 30:
+            label = label[:30]
         vectorstore = self.ai_client.create_embedding(chunks)
         uuid = str(v4())
         file_name = f'{label}_{uuid}.faiss'

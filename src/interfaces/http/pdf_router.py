@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Form, File, Request, Header
+from fastapi import APIRouter, Depends, Form, File, Request, Header, UploadFile
 from fastapi.responses import JSONResponse
 
 from dependency_injector.wiring import inject, Provide
@@ -25,13 +25,14 @@ router = APIRouter(
 async def upload_pdf(
         request: Request,
         x_auth_token: Annotated[str, Header()],
-        file: Annotated[bytes, File()],
+        file: Annotated[UploadFile, File()],
         label: Annotated[str | None, Form()] = None,
-        tags: Annotated[str | None, Form()] = None,
         new_pdf_embedding_usecase: NewPdfEmbeddingUsecase = Depends(Provide[Container.new_pdf_embedding_usecase]),
 ):
+    if file.content_type != 'application/pdf':
+        return JSONResponse(content={"detail": "Invalid file type"}, status_code=400)
     user_id = request.state.user_id
-    res = new_pdf_embedding_usecase.execute(file, user_id, label, tags)
+    res = new_pdf_embedding_usecase.execute(file, user_id, label)
     return JSONResponse(content=res, status_code=201)
 
 @router.get('/', response_model=list[PdfModel])
