@@ -37,3 +37,24 @@ With that set, first thing it is to install the dependencies, that is used
 ```bash
 pip install -r requirements.txt
 ```
+
+And now you can run, the entrypoint it is the __main__.py file, sou can run:
+
+```bash
+python __main__.py
+
+```
+
+Or
+
+```bash
+python .
+```
+
+The uvicorn will be setup at runtime.
+
+## Database
+
+There is 2 main databases, a postgres for management and mongodb for the messages.
+
+You must have to push the SQL inside the `tables.sql` into your postgres database.
