@@ -3,11 +3,23 @@ version: '3.7'
 services:
   api:
     build: .
-    name: api
     ports:
       - "8888:8888"
+
   postgres:
     image: postgres
     restart: allways
-    enviroment:
-      POSTGRES_PASSWORD: 123333
+    environment:
+      - "POSTGRES_PASSWORD:123333"
+    ports:
+      - "5432:5432"
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    port:
+      - "27017:27017"
+
