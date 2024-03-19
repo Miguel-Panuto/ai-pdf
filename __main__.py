@@ -1,14 +1,12 @@
 from dotenv import load_dotenv
 
-from src.container import Container
-
 from src.interfaces.http.server import start_server
 
 
 import asyncio
 import sys
 from os import environ
-from paths import PROJECT_ROOT 
+from paths import PROJECT_ROOT
 
 def create_gcp_keys():
     gcp_json_plain = environ.get('GCP_KEYS_JSON')

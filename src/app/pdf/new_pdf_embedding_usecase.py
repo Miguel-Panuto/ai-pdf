@@ -19,20 +19,19 @@ import shutil
 from src.utils.decorators import cleanup_tmp_files
 
 
+import pdf_processor
+
 class NewPdfEmbeddingUsecase:
     def __init__(self, ai_client: AIClient, gcp_storage_client: GcpStorageClient, pdf_vector_repository: PdfVectorRepository):
         self.ai_client = ai_client
         self.gcp_storage_client = gcp_storage_client
         self.pdf_vector_repository = pdf_vector_repository
 
-    def _pages_to_text(self, pdf: PdfReader) -> str:
-        text = ""
-        for page in pdf.pages:
-            text += page.extract_text()
-        return text
+    def _pages_to_text(self, pdf: bytes) -> str:
+        return pdf_processor.process_pdf(pdf)
 
     def _text_to_chunks(self, text: str) -> list[str]:
-        text_splitter = CharacterTextSplitter(separator="\n", chunk_size=1000, chunk_overlap=200, length_function=len)
+        text_splitter = CharacterTextSplitter(separator=".", chunk_size=4000, chunk_overlap=200, length_function=len)
         chunks = text_splitter.split_text(text)
         return chunks
 
@@ -42,13 +41,10 @@ class NewPdfEmbeddingUsecase:
         if path.isfile(f"{path_saved}.zip"):
             remove(f"{path_saved}.zip")
 
-    @cleanup_tmp_files
     def execute(self, pdf: UploadFile, user_id: int, label: str | None):
         call_name = '[new_pdf_embedding_usecase][execute]'
         pdf_bytes = pdf.file.read()
-        pdf_stream = BytesIO(pdf_bytes)
-        pdf_reader = PdfReader(pdf_stream)
-        chunks = self._text_to_chunks(self._pages_to_text(pdf_reader))
+        chunks = self._text_to_chunks(self._pages_to_text(pdf_bytes))
 
         print(f'{call_name} just created the chunks')
         if not label:

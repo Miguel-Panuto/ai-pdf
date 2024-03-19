@@ -1,0 +1,19 @@
+[package]
+name = "pdf_processor"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+lopdf = { version = "0.32.0", features = ["pom", "pom_parser"] }
+pyo3 = { version = "0.20.3", features = ["extension-module"] }
+
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+[tool.maturin]
+features = ["pyo3/extension-module"]

@@ -1,3 +1,5 @@
 .DS_Store
 gcp-keys.json
 .venv/
+
+lib/**/target
